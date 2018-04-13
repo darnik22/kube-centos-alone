@@ -1,0 +1,26 @@
+- hosts: k8s-cluster
+  become: yes
+  become_user: root
+  tasks:
+    - name: Place kube domains in resolv.conf
+      lineinfile:
+        regexp: "^search"
+        line: "search default.svc.kube.{{dnszone}} svc.kube.{{dnszone}} kube.{{dnszone}} openstacklocal"
+        path: "/etc/resolv.conf"        
+    - name: Insert --max-pod in kubelet.env
+      lineinfile:
+        regexp: '^--max-pod'
+        line: '--max-pods=200 \'
+        insertafter: '^KUBELET_ARGS'
+        path: /etc/kubernetes/kubelet.env
+    - name: Insert --volume-stats-agg-period in kubelet.env
+      lineinfile:
+        regexp: '^--volume-stats-agg-period'
+        line: '--volume-stats-agg-period=0 \'
+        insertafter: '^KUBELET_ARGS'
+        path: /etc/kubernetes/kubelet.env
+    - name: Restart kubelet
+      systemd:
+        name: kubelet
+        state: restarted
+      
