@@ -85,10 +85,6 @@ resource "null_resource" "provision-kubespray" {
     destination = "playbooks.tgz"
   }  
   provisioner "file" {
-    source = "kubespray.tgz"
-    destination = "kubespray.tgz"
-  }  
-  provisioner "file" {
     content = "${join("\n", formatlist("%s ansible_host=%s", openstack_compute_instance_v2.kube-ctlr.*.name, openstack_compute_instance_v2.kube-ctlr.*.access_ip_v4))}\n${join("\n", formatlist("%s ansible_host=%s", openstack_compute_instance_v2.kube-work.*.name, openstack_compute_instance_v2.kube-work.*.access_ip_v4))}\n\n[kube-master]\n${join("\n", openstack_compute_instance_v2.kube-ctlr.*.name)}\n\n[etcd]\n${join("\n", openstack_compute_instance_v2.kube-ctlr.*.name)}\n\n[kube-node]\n${join("\n", openstack_compute_instance_v2.kube-work.*.name)}\n\n[k8s-cluster:children]\nkube-node\nkube-master\n"
     destination = "inventory.ini"
   }
