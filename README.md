@@ -28,7 +28,7 @@ terraform apply -var project=example_project -var email=joe@example.com ....
 Build your k8s cluster issuing:
 ```
 terraform init
-terraform apply -var-file ../parameter.tvars
+terraform apply -var-file parameter.tvars
 ```
 
 ## Accessing your k8s cluster
