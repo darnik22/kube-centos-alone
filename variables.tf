@@ -9,7 +9,7 @@ variable "otc_domain_name" {}
 # The name of the project. It is used to prefix VM names. It should be unique among
 # OTC as it is used to create names of VMs. 
 variable "project" {
-#   default = "od"
+   default = "myproject"
 }
 
 # Kube cidr for services - the default is 10.233.0.0/18
